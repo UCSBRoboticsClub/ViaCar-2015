@@ -3317,8 +3317,8 @@ SDR0403-560KL - 56uH, 10%, 500mA RMS/740mA peak</description>
 <part name="C5" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="C7" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="10nF"/>
 <part name="C8" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="10nF"/>
-<part name="R1" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="10K"/>
-<part name="R3" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="332"/>
+<part name="R1" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="33K"/>
+<part name="R3" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="5K"/>
 <part name="R5" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="1K"/>
 <part name="C9" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="10nF"/>
 <part name="SUPPLY2" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
@@ -3341,7 +3341,7 @@ SDR0403-560KL - 56uH, 10%, 500mA RMS/740mA peak</description>
 <part name="C11" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="R2" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="100K"/>
 <part name="GND11" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="R4" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="3.32K"/>
+<part name="R4" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="10K"/>
 <part name="GND12" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND4" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="R6" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="100K"/>
@@ -3352,15 +3352,15 @@ SDR0403-560KL - 56uH, 10%, 500mA RMS/740mA peak</description>
 <part name="SUPPLY1" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
 <part name="U2" library="ADI-Phase-2" deviceset="AD8646ARMZ" device=""/>
 <part name="R8" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="10K"/>
-<part name="C12" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="150pF"/>
+<part name="C12" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="200pF"/>
 <part name="GND14" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="SUPPLY4" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
 <part name="GND16" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="C14" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="0.1uF"/>
 <part name="GND17" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="SUPPLY7" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
-<part name="R9" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="10K"/>
-<part name="R10" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="10K"/>
+<part name="R9" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="100K"/>
+<part name="R10" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="100K"/>
 <part name="GND5" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="SUPPLY8" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
 <part name="U$1" library="Custom" deviceset="SHIELD-CORNER" device=""/>
@@ -3371,6 +3371,7 @@ SDR0403-560KL - 56uH, 10%, 500mA RMS/740mA peak</description>
 <part name="U$6" library="Custom" deviceset="SHIELD-MIDDLE" device=""/>
 <part name="U$7" library="Custom" deviceset="SHIELD-MIDDLEPART" device=""/>
 <part name="U$8" library="Custom" deviceset="SHIELD-MIDDLE3" device=""/>
+<part name="C4" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="1uF"/>
 </parts>
 <sheets>
 <sheet>
@@ -3438,6 +3439,7 @@ SDR0403-560KL - 56uH, 10%, 500mA RMS/740mA peak</description>
 <instance part="U$6" gate="G$1" x="134.62" y="121.92"/>
 <instance part="U$7" gate="G$1" x="144.78" y="111.76"/>
 <instance part="U$8" gate="G$1" x="144.78" y="132.08"/>
+<instance part="C4" gate="G$1" x="114.3" y="35.56" rot="MR180"/>
 </instances>
 <busses>
 </busses>
@@ -3543,6 +3545,9 @@ SDR0403-560KL - 56uH, 10%, 500mA RMS/740mA peak</description>
 <pinref part="R10" gate="G$1" pin="1"/>
 <pinref part="GND5" gate="1" pin="GND"/>
 <wire x1="124.46" y1="25.4" x2="124.46" y2="27.94" width="0.1524" layer="91"/>
+<pinref part="C4" gate="G$1" pin="1"/>
+<wire x1="114.3" y1="30.48" x2="114.3" y2="25.4" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="25.4" x2="124.46" y2="25.4" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="VCC" class="0">
@@ -3721,6 +3726,9 @@ SDR0403-560KL - 56uH, 10%, 500mA RMS/740mA peak</description>
 <junction x="124.46" y="40.64"/>
 <pinref part="U2" gate="A" pin="+IN_B"/>
 <wire x1="147.32" y1="53.34" x2="137.16" y2="53.34" width="0.1524" layer="91"/>
+<pinref part="C4" gate="G$1" pin="2"/>
+<wire x1="114.3" y1="38.1" x2="114.3" y2="40.64" width="0.1524" layer="91"/>
+<wire x1="114.3" y1="40.64" x2="124.46" y2="40.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$10" class="0">

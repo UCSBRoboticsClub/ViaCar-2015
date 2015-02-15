@@ -643,7 +643,7 @@ Please make sure your boards conform to these design rules.</description>
 <element name="C1" library="SparkFun-Capacitors" package="0603-CAP" value="51pF" x="15.24" y="12.7"/>
 <element name="C10" library="SparkFun-Capacitors" package="0603-CAP" value="1.5nF" x="10.795" y="31.75" rot="R90"/>
 <element name="C11" library="SparkFun-Capacitors" package="0603-CAP" value="0.1uF" x="7.62" y="31.75" rot="R90"/>
-<element name="C12" library="SparkFun-Capacitors" package="0603-CAP" value="150pF" x="17.145" y="21.59" rot="R90"/>
+<element name="C12" library="SparkFun-Capacitors" package="0603-CAP" value="200pF" x="17.145" y="21.59" rot="R90"/>
 <element name="C14" library="SparkFun-Capacitors" package="0603-CAP" value="0.1uF" x="23.495" y="31.75" rot="R90"/>
 <element name="C2" library="Custom" package="TRIMCAP-TZY" value="5.5~25pF" x="6.985" y="4.445"/>
 <element name="C3" library="SparkFun-Passives" package="1206" value="10uF" x="15.875" y="31.75"/>
@@ -656,16 +656,16 @@ Please make sure your boards conform to these design rules.</description>
 </element>
 <element name="L1" library="SparkFun-Passives" package="RLB0912" value="68mH" x="13.97" y="3.175"/>
 <element name="LED1" library="SparkFun-LED" package="LED-0603" value="" x="22.86" y="38.89375" rot="R270"/>
-<element name="R1" library="SparkFun-Resistors" package="0603-RES" value="10K" x="11.43" y="12.7"/>
-<element name="R10" library="SparkFun-Resistors" package="0603-RES" value="10K" x="23.495" y="21.59" rot="R90"/>
+<element name="R1" library="SparkFun-Resistors" package="0603-RES" value="33K" x="11.43" y="12.7"/>
+<element name="R10" library="SparkFun-Resistors" package="0603-RES" value="100K" x="23.495" y="21.59" rot="R90"/>
 <element name="R2" library="SparkFun-Resistors" package="0603-RES" value="100K" x="4.445" y="16.51" rot="R90"/>
-<element name="R3" library="SparkFun-Resistors" package="0603-RES" value="332" x="10.795" y="16.51" rot="R90"/>
-<element name="R4" library="SparkFun-Resistors" package="0603-RES" value="3.32K" x="13.97" y="21.59" rot="R90"/>
+<element name="R3" library="SparkFun-Resistors" package="0603-RES" value="5K" x="10.795" y="16.51" rot="R90"/>
+<element name="R4" library="SparkFun-Resistors" package="0603-RES" value="10K" x="13.97" y="21.59" rot="R90"/>
 <element name="R5" library="SparkFun-Resistors" package="0603-RES" value="1K" x="7.62" y="21.59" rot="R90"/>
 <element name="R6" library="SparkFun-Resistors" package="0603-RES" value="100K" x="7.62" y="16.51" rot="R90"/>
 <element name="R7" library="SparkFun-Resistors" package="0603-RES" value="681" x="20.32" y="31.75" rot="R90"/>
 <element name="R8" library="SparkFun-Resistors" package="0603-RES" value="10K" x="20.32" y="21.59" rot="R90"/>
-<element name="R9" library="SparkFun-Resistors" package="0603-RES" value="10K" x="23.495" y="26.67" rot="R90"/>
+<element name="R9" library="SparkFun-Resistors" package="0603-RES" value="100K" x="23.495" y="26.67" rot="R90"/>
 <element name="U1" library="Analog Devices_By_element14_Batch_1" package="SOP65P490X110-8N" value="AD8221ARMZ" x="17.145" y="16.51" smashed="yes">
 <attribute name="PACKAGE" value="MSOP-8" x="17.145" y="16.51" size="1.778" layer="27" display="off"/>
 <attribute name="OC_NEWARK" value="19M0946" x="17.145" y="16.51" size="1.778" layer="27" display="off"/>
@@ -698,6 +698,7 @@ Please make sure your boards conform to these design rules.</description>
 <element name="U$6" library="Custom" package="SHIELD-MIDDLE" value="SHIELD-MIDDLE" x="13.97" y="22.86" rot="R180"/>
 <element name="U$7" library="Custom" package="SHIELD-MIDDLEPART" value="SHIELD-MIDDLEPART" x="13.97" y="22.86" rot="R270"/>
 <element name="U$8" library="Custom" package="SHIELD-MIDDLE3" value="SHIELD-MIDDLE3" x="13.97" y="22.86" rot="R90"/>
+<element name="C4" library="SparkFun-Capacitors" package="0603-CAP" value="1uF" x="24.13" y="21.59" rot="R90"/>
 </elements>
 <signals>
 <signal name="N$1">
@@ -792,6 +793,7 @@ Please make sure your boards conform to these design rules.</description>
 <via x="22.86" y="34.29" extent="1-16" drill="0.3302"/>
 <wire x1="16.51" y1="39.0525" x2="16.51" y2="35.56" width="1.27" layer="16"/>
 <via x="19.05" y="34.29" extent="1-16" drill="0.3302"/>
+<contactref element="C4" pad="1"/>
 <wire x1="16.51" y1="39.0525" x2="16.51" y2="39.02075" width="0" layer="19" extent="16-16"/>
 </signal>
 <signal name="VCC">
@@ -957,6 +959,8 @@ Please make sure your boards conform to these design rules.</description>
 <wire x1="23.495" y1="22.44" x2="23.495" y2="25.82" width="0.2032" layer="1"/>
 <wire x1="19.3294" y1="25.7048" x2="23.3798" y2="25.7048" width="0.2032" layer="1"/>
 <wire x1="23.3798" y1="25.7048" x2="23.495" y2="25.82" width="0.2032" layer="1"/>
+<contactref element="C4" pad="2"/>
+<wire x1="24.13" y1="22.44" x2="23.495" y2="22.44" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="N$10">
 <contactref element="C1" pad="2"/>
