@@ -1,6 +1,7 @@
 #include "Commands.h"
 #include "Globals.h"
 #include "RadioTerminal.h"
+#include <IntervalTimer.h>
 #undef min
 #undef max
 #include <functional>
