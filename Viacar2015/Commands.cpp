@@ -25,11 +25,22 @@ struct Variable
 
 const Parameter paramList[] =
 {
+    {"h", &h},
+    {"d", &d},
+    {"c1", &c1},
+    {"c2", &c2},
+    {"speed", &speed},
 };
 
 
 const Variable varList[] =
 {
+    {"vr", [&]{ return vr); }},
+    {"vl", [&]{ return vl; }},
+    {"xr", [&]{ return xr; }},
+    {"xl", [&]{ return xl; }},
+    {"x", [&]{ return float(x); }},
+    {"calsw", [&]{ return calSwitch.pressed(); }},
 };
 
 

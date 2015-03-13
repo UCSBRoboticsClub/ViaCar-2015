@@ -11,9 +11,9 @@
 namespace RadioTerminal
 {
     // Pin definitions
-    const int csnPin = 10;
+    const int csnPin = 8;
     const int cePin = 9;
-    const int irqPin = 8;
+    const int irqPin = 10;
 
     // Radio on by default?
     bool useRadio = true;
