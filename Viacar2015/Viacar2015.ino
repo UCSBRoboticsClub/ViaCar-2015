@@ -26,12 +26,15 @@ void setup()
     adc.setConversionSpeed(ADC_HIGH_SPEED);
     adc.setSamplingSpeed(ADC_HIGH_SPEED);
     adc.setAveraging(16);
-    
-    controlTimer.begin(controlLoop, controlPeriodUs);
-    controlTimer.priority(144);
 
     RadioTerminal::initialize();
     setupCommands();
+
+    servoController.setOutputLimits(-60.f, 60.f);
+    servoController.setTuning(1000.f, 0.f, 100.f);
+
+    controlTimer.begin(controlLoop, controlPeriodUs);
+    controlTimer.priority(144);
 }
 
 
@@ -43,7 +46,10 @@ void loop()
 
 void controlLoop()
 {
+    float lastx = x;
     x.push(getPosition());
+
+    
 }
 
 
@@ -57,46 +63,33 @@ float getPosition()
 
     float candidates[] =
     {
-        (+xr + +xl) * 0.5f,
-        (-xr + +xl) * 0.5f,
-        (-xr + -xl) * 0.5f
+        ( xr + xl) * 0.5f,
+        (-xr + xl) * 0.5f,
+        (-xr - xl) * 0.5f
     };
 
     float rlDiff[] =
     {
-        std::fabs( xr - xl + d),
-        std::fabs(-xr - xl + d),
-        std::fabs(-xr + xl + d)
+         xr - xl + d,
+        -xr - xl + d,
+        -xr + xl + d
     };
 
-    float prevDiff[] =
-    {
-        std::fabs(x - candidates[0]),
-        std::fabs(x - candidates[1]),
-        std::fabs(x - candidates[2])
-    };
+    float score[3];
+    for (int i = 0; i < 3; ++i)
+        score[i] = rlDiff[i]*rlDiff[i] + (x-candidates[i])*(x-candidates[i]); 
 
-    if (rlDiff[0] + prevDiff[0] < rlDiff[1] + prevDiff[1])
-    {
-        if (rlDiff[0] + prevDiff[0] < rlDiff[2] + prevDiff[2])
-            return candidates[0];
-        else
-            return candidates[2];
-    }
-    else 
-    {
-        if (rlDiff[1] + prevDiff[1] < rlDiff[2] + prevDiff[2])
-            return candidates[1];
-        else
-            return candidates[2];
-    }
-        
+    int imin = 0;
+    for (int i = 1; i < 3; ++i)
+        imin = score[i] < score[imin] ? i : imin;
+
+    return candidates[imin];
 }
 
 
 float volt2dist(float v)
 {
-    float x2 = c2*h/std::exp(v/c1) - h*h;
-    return std::sqrt(x2 > 0.f ? x2 : 0.f);
+    float xsq = c2*h/std::exp(v/c1) - h*h;
+    return std::sqrt(xsq > 0.f ? xsq : 0.f);
 }
 

@@ -10,31 +10,42 @@
 #include <stdio.h>
 
 
-struct Parameter
+struct Setter
 {
     const char* name;
-    float* var;
+    std::function<void(float)> func;
 };
 
-struct Variable
+struct Getter
 {
     const char* name;
     std::function<float(void)> func;
 };
 
 
-const Parameter paramList[] =
+const Setter setList[] =
 {
-    {"h", &h},
-    {"d", &d},
-    {"c1", &c1},
-    {"c2", &c2},
-    {"speed", &speed},
+    {"h", [&](float f){ h = f; }},
+    {"d", [&](float f){ d = f; }},
+    {"c1", [&](float f){ c1 = f; }},
+    {"c2", [&](float f){ c2 = f; }},
+    {"speed", [&](float f){ speed = f; }},
+    {"kp", [&](float f){ servoController.kp = f; }},
+    {"ki", [&](float f){ servoController.ki = f; }},
+    {"kd", [&](float f){ servoController.kd = f; }},
 };
 
 
-const Variable varList[] =
+const Getter getList[] =
 {
+    {"h", [&]{ return h; }},
+    {"d", [&]{ return d; }},
+    {"c1", [&]{ return c1; }},
+    {"c2", [&]{ return c2; }},
+    {"speed", [&]{ return speed; }},
+    {"kp", [&]{ return servoController.kp; }},
+    {"ki", [&]{ return servoController.ki; }},
+    {"kd", [&]{ return servoController.kd; }},
     {"vr", [&]{ return vr; }},
     {"vl", [&]{ return vl; }},
     {"xr", [&]{ return xr; }},
@@ -61,23 +72,23 @@ IntervalTimer WatchHandler::timer;
 CmdHandler* watch(const char* input)
 {
     char buf[32];
-    const int varListSize = (sizeof varList) / (sizeof varList[0]);
+    const int getListSize = (sizeof getList) / (sizeof getList[0]);
 
     const char* s = std::strchr(input, ' ');
     if (s != nullptr)
     {
         ++s;
-        for (int i = 0; i < varListSize; ++i)
+        for (int i = 0; i < getListSize; ++i)
         {
-            if (std::strncmp(s, varList[i].name, 32) == 0)
-                return new WatchHandler(varList[i].func);
+            if (std::strncmp(s, getList[i].name, 32) == 0)
+                return new WatchHandler(getList[i].func);
         }
     }
 
     RadioTerminal::write("Usage: w <var>\nValid vars:");
-    for (int i = 0; i < varListSize; ++i)
+    for (int i = 0; i < getListSize; ++i)
     {
-        snprintf(buf, 32, "\n  %s", varList[i].name);
+        snprintf(buf, 32, "\n  %s", getList[i].name);
         RadioTerminal::write(buf);
     }
     return nullptr;
@@ -103,29 +114,29 @@ void WatchHandler::refresh()
 CmdHandler* print(const char* input)
 {
     char buf[32];
-    const int paramListSize = (sizeof paramList) / (sizeof paramList[0]);
+    const int getListSize = (sizeof getList) / (sizeof getList[0]);
     
     const char* s = std::strchr(input, ' ');
     if (s != nullptr)
     {
         ++s;
-        for (int i = 0; i < paramListSize; ++i)
+        for (int i = 0; i < getListSize; ++i)
         {
-            if (std::strncmp(s, paramList[i].name, 32) == 0)
+            if (std::strncmp(s, getList[i].name, 32) == 0)
             {
                 snprintf(buf, 32, "%s = %4.4f",
-                         paramList[i].name,
-                         *(paramList[i].var));
+                         getList[i].name,
+                         getList[i].func());
                 RadioTerminal::write(buf);
                 return nullptr;
             }
         }
     }
     
-    RadioTerminal::write("Usage: p <param>\nValid parameters:");
-    for (int i = 0; i < paramListSize; ++i)
+    RadioTerminal::write("Usage: p <var>\nValid variables:");
+    for (int i = 0; i < getListSize; ++i)
     {
-        snprintf(buf, 32, "\n  %s", paramList[i].name);
+        snprintf(buf, 32, "\n  %s", getList[i].name);
         RadioTerminal::write(buf);
     }
     return nullptr;
@@ -135,7 +146,7 @@ CmdHandler* print(const char* input)
 CmdHandler* set(const char* input)
 {
     char buf[32];
-    const int paramListSize = (sizeof paramList) / (sizeof paramList[0]);
+    const int setListSize = (sizeof setList) / (sizeof setList[0]);
     
     const char* s = std::strchr(input, ' ');
     if (s != nullptr)
@@ -146,14 +157,14 @@ CmdHandler* set(const char* input)
             int pslen = s2 - s;
             float value = strtof(++s2, nullptr);
             
-            for (int i = 0; i < paramListSize; ++i)
+            for (int i = 0; i < setListSize; ++i)
             {
-                if (std::strncmp(s, paramList[i].name, pslen) == 0)
+                if (std::strncmp(s, setList[i].name, pslen) == 0)
                 {
-                    *(paramList[i].var) = value;
+                    setList[i].func(value);
                     snprintf(buf, 32, "%s = %4.4f",
-                             paramList[i].name,
-                             *(paramList[i].var));
+                             setList[i].name,
+                             value);
                     RadioTerminal::write(buf);
                     return nullptr;
                 }
@@ -161,10 +172,10 @@ CmdHandler* set(const char* input)
         }
     }
     
-    RadioTerminal::write("Usage: s <param> <value>\nValid parameters:");
-    for (int i = 0; i < paramListSize; ++i)
+    RadioTerminal::write("Usage: s <var> <value>\nValid variables:");
+    for (int i = 0; i < setListSize; ++i)
     {
-        snprintf(buf, 32, "\n  %s", paramList[i].name);
+        snprintf(buf, 32, "\n  %s", setList[i].name);
         RadioTerminal::write(buf);
     }
     return nullptr;
