@@ -35,7 +35,7 @@ const Parameter paramList[] =
 
 const Variable varList[] =
 {
-    {"vr", [&]{ return vr); }},
+    {"vr", [&]{ return vr; }},
     {"vl", [&]{ return vl; }},
     {"xr", [&]{ return xr; }},
     {"xl", [&]{ return xl; }},

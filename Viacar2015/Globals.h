@@ -1,14 +1,16 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#include <Arduino.h>
 #include "./Servo.h"
 #include "VNH5019.h"
 #include "Button.h"
 #include "LowPass.h"
+#include "PIDController.h"
 
 
-const int sensorRPin = A0;
-const int sensorLPin = A1;
+const int sensorRPin = A1;
+const int sensorLPin = A0;
 const int switchPin = 0;
 const int motorFwdPin = 7;
 const int motorBackPin = 6;
