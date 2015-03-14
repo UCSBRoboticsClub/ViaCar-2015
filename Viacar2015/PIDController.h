@@ -22,7 +22,6 @@ private:
     const float dt;
     float ierror;
     LowPass derror;
-    LowPass ierrorlp;
     float outputMin;
     float outputMax;
     float lastError;

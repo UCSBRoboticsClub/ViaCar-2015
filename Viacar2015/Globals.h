@@ -27,6 +27,8 @@ extern float d;
 extern float c1;
 extern float c2;
 extern float speed;
+extern float controllerOut;
+extern bool controllerEnabled;
 
 extern Motor motor;
 extern Servo servo;

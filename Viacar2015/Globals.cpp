@@ -12,8 +12,10 @@ float d = 0.10f;
 float c1 = 0.2f;
 float c2 = 4.4e3f;
 float speed = 0.3f;
+float controllerOut = 0.f;
+bool controllerEnabled = true;
 
 Motor motor(motorFwdPin, motorBackPin, motorSpeedPin);
-Servo steering(servoPin);
+Servo servo(servoPin);
 Button calSwitch(switchPin, LOW, true);
 PIDController servoController(dt);

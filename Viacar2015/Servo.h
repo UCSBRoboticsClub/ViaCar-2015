@@ -14,7 +14,7 @@ public:
     void operator=(float degrees);
     operator float();
        
-protected:
+//private:
     int pwmPin;
     int pulseWidth;
     bool enabled;

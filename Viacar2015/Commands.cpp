@@ -9,6 +9,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define GETFLOAT(name) [&]{ return name; }
+#define SETFLOAT(name) [&](float f){ name = f; }
+
 
 struct Setter
 {
@@ -25,33 +28,47 @@ struct Getter
 
 const Setter setList[] =
 {
-    {"h", [&](float f){ h = f; }},
-    {"d", [&](float f){ d = f; }},
-    {"c1", [&](float f){ c1 = f; }},
-    {"c2", [&](float f){ c2 = f; }},
-    {"speed", [&](float f){ speed = f; }},
-    {"kp", [&](float f){ servoController.kp = f; }},
-    {"ki", [&](float f){ servoController.ki = f; }},
-    {"kd", [&](float f){ servoController.kd = f; }},
+    {"h", SETFLOAT(h)},
+    {"d", SETFLOAT(d)},
+    {"c1", SETFLOAT(c1)},
+    {"c2", SETFLOAT(c2)},
+    {"speed", SETFLOAT(speed)},
+    {"kp", SETFLOAT(servoController.kp)},
+    {"ki", SETFLOAT(servoController.ki)},
+    {"kd", SETFLOAT(servoController.kd)},
+    {"srv.cen", SETFLOAT(servo.center)},
+    {"srv.upd", SETFLOAT(servo.usPerDegree)},
+    {"srv.ul", SETFLOAT(servo.upperLimit)},
+    {"srv.ll", SETFLOAT(servo.lowerLimit)},
+    {"srv.deg", [&](float f){ servo.write(f); }},
+    {"en", [&](float f){ controllerEnabled = f > 0.f; }},
 };
 
 
 const Getter getList[] =
 {
-    {"h", [&]{ return h; }},
-    {"d", [&]{ return d; }},
-    {"c1", [&]{ return c1; }},
-    {"c2", [&]{ return c2; }},
-    {"speed", [&]{ return speed; }},
-    {"kp", [&]{ return servoController.kp; }},
-    {"ki", [&]{ return servoController.ki; }},
-    {"kd", [&]{ return servoController.kd; }},
-    {"vr", [&]{ return vr; }},
-    {"vl", [&]{ return vl; }},
-    {"xr", [&]{ return xr; }},
-    {"xl", [&]{ return xl; }},
+    {"h", GETFLOAT(h)},
+    {"d", GETFLOAT(d)},
+    {"c1", GETFLOAT(c1)},
+    {"c2", GETFLOAT(c2)},
+    {"speed", GETFLOAT(speed)},
+    {"kp", GETFLOAT(servoController.kp)},
+    {"ki", GETFLOAT(servoController.ki)},
+    {"kd", GETFLOAT(servoController.kd)},
+    {"srv.cen", GETFLOAT(servo.center)},
+    {"srv.upd", GETFLOAT(servo.usPerDegree)},
+    {"srv.ul", GETFLOAT(servo.upperLimit)},
+    {"srv.ll", GETFLOAT(servo.lowerLimit)},
+    {"srv.deg", [&]{ return servo.read(); }},
+    {"srv.pw", GETFLOAT(servo.pulseWidth)},
+    {"ctrl", GETFLOAT(controllerOut)},
+    {"en", [&]{ return float(controllerEnabled); }},
+    {"vr", GETFLOAT(vr)},
+    {"vl", GETFLOAT(vl)},
+    {"xr", GETFLOAT(xr)},
+    {"xl", GETFLOAT(xl)},
     {"x", [&]{ return float(x); }},
-    {"calsw", [&]{ return calSwitch.pressed(); }},
+    {"calsw", [&]{ return float(calSwitch.pressed()); }},
 };
 
 

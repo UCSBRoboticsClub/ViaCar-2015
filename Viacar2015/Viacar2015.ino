@@ -4,7 +4,6 @@
 #include "RadioTerminal.h"
 #include "Commands.h"
 #include "ADC.h"
-
 #include <cmath>
 
 
@@ -46,10 +45,17 @@ void loop()
 
 void controlLoop()
 {
-    float lastx = x;
-    x.push(getPosition());
+    calSwitch.update();
+    if (calSwitch.pressEdge())
+        c2 = 0.f;
 
-    
+    x.push(getPosition());
+    controllerOut = servoController.update(x);
+
+    if (controllerEnabled)
+        servo = controllerOut;
+
+    motor = speed;
 }
 
 
@@ -61,6 +67,7 @@ float getPosition()
     xr = volt2dist(vr);
     xl = volt2dist(vl);
 
+    // Possible locations of the wire based on the two readings
     float candidates[] =
     {
         ( xr + xl) * 0.5f,
@@ -68,6 +75,7 @@ float getPosition()
         (-xr - xl) * 0.5f
     };
 
+    // Difference between right and left distance measurements
     float rlDiff[] =
     {
          xr - xl + d,
@@ -75,10 +83,12 @@ float getPosition()
         -xr + xl + d
     };
 
+    // Score assigned to each candidate wire location (lower is better)
     float score[3];
     for (int i = 0; i < 3; ++i)
         score[i] = rlDiff[i]*rlDiff[i] + (x-candidates[i])*(x-candidates[i]); 
 
+    // Choose candidate with the lowest score
     int imin = 0;
     for (int i = 1; i < 3; ++i)
         imin = score[i] < score[imin] ? i : imin;
@@ -89,7 +99,12 @@ float getPosition()
 
 float volt2dist(float v)
 {
-    float xsq = c2*h/std::exp(v/c1) - h*h;
-    return std::sqrt(xsq > 0.f ? xsq : 0.f);
+    float a = h*std::exp(v/c1);
+
+    if (calSwitch.pressed())
+        c2 = a > c2 ? a : c2;
+
+    float b = c2/a - 1.f;
+    return h*std::sqrt(b > 0.f ? b : 0.f);
 }
 
