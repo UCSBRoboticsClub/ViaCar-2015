@@ -3318,7 +3318,7 @@ SDR0403-560KL - 56uH, 10%, 500mA RMS/740mA peak</description>
 <part name="C7" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="10nF"/>
 <part name="C8" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="10nF"/>
 <part name="R1" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="33K"/>
-<part name="R3" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="5K"/>
+<part name="R3" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="2K"/>
 <part name="R5" library="SparkFun-Resistors" deviceset="RESISTOR" device="0603" value="1K"/>
 <part name="C9" library="SparkFun-Capacitors" deviceset="CAP" device="0603-CAP" value="10nF"/>
 <part name="SUPPLY2" library="SparkFun-Aesthetics" deviceset="VCC" device=""/>
