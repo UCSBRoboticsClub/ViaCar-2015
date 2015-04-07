@@ -68,7 +68,9 @@ const Getter getList[] =
     {"xr", GETFLOAT(xr)},
     {"xl", GETFLOAT(xl)},
     {"x", [&]{ return float(x); }},
-    {"calsw", [&]{ return float(calSwitch.pressed()); }},
+    {"but", [&]{ return float(button.pressed()); }},
+    {"sw1", [&]{ return float(switch1.pressed()); }},
+    {"sw2", [&]{ return float(switch2.pressed()); }},
 };
 
 

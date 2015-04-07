@@ -18,6 +18,11 @@ float volt2dist(float v);
 void setup()
 {
     asm(".global _printf_float");
+
+    pinMode(led1Pin, OUTPUT);
+    pinMode(led2Pin, OUTPUT);
+    pinMode(led3Pin, OUTPUT);
+    pinMode(led4Pin, OUTPUT);
     
     x.setCutoffFreq(50.f, dt);
 
@@ -36,19 +41,46 @@ void setup()
     controlTimer.priority(144);
 }
 
+float buzFreq = 110.f;
 
 void loop()
 {
     delay(10);
+
+    button.update();
+    switch1.update();
+    switch2.update();
+    
+    if (switch1.pressEdge())
+        c2 = 0.f;
+
+    const float pi = 3.14159f;
+    const float rate = 2.f*pi/1000.f;
+    analogWrite(led1Pin, int(65535.f * (std::sin(millis()*rate) + 1.f) * 0.5f));
+    analogWrite(led2Pin, int(65535.f * (std::sin(millis()*rate - pi*0.5f) + 1.f) * 0.5f));
+    analogWrite(led3Pin, int(65535.f * (std::sin(millis()*rate - pi) + 1.f) * 0.5f));
+    analogWrite(led4Pin, int(65535.f * (std::sin(millis()*rate - pi*1.5f) + 1.f) * 0.5f));
+
+    if (switch2.pressEdge())
+    {
+        buzFreq = 110.f;
+        tone(buzzerPin, buzFreq);
+    }
+
+    if (button.releaseEdge())
+    {
+        buzFreq *= 1.0594631f;
+        tone(buzzerPin, buzFreq);
+    }
+
+    if (switch2.releaseEdge())
+        noTone(buzzerPin);
+        
 }
 
 
 void controlLoop()
 {
-    calSwitch.update();
-    if (calSwitch.pressEdge())
-        c2 = 0.f;
-
     x.push(getPosition());
     controllerOut = servoController.update(x);
 
@@ -101,7 +133,7 @@ float volt2dist(float v)
 {
     float a = h*std::exp(v/c1);
 
-    if (calSwitch.pressed())
+    if (switch1.pressed())
         c2 = a > c2 ? a : c2;
 
     float b = c2/a - 1.f;

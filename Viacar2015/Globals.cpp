@@ -17,5 +17,7 @@ bool controllerEnabled = true;
 
 Motor motor(motorFwdPin, motorBackPin, motorSpeedPin);
 Servo servo(servoPin);
-Button calSwitch(switchPin, LOW, true);
+Button button(buttonPin, LOW, true);
+Button switch1(switch1Pin, LOW, true);
+Button switch2(switch2Pin, LOW, true);
 PIDController servoController(dt);
