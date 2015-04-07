@@ -56,10 +56,11 @@ void loop()
 
     const float pi = 3.14159f;
     const float rate = 2.f*pi/1000.f;
-    analogWrite(led1Pin, int(65535.f * (std::sin(millis()*rate) + 1.f) * 0.5f));
-    analogWrite(led2Pin, int(65535.f * (std::sin(millis()*rate - pi*0.5f) + 1.f) * 0.5f));
-    analogWrite(led3Pin, int(65535.f * (std::sin(millis()*rate - pi) + 1.f) * 0.5f));
-    analogWrite(led4Pin, int(65535.f * (std::sin(millis()*rate - pi*1.5f) + 1.f) * 0.5f));
+    const float pwr = 4.f;
+    analogWrite(led1Pin, int(65535.f * std::pow((std::sin(millis()*rate) + 1.f) * 0.5f, pwr)));
+    analogWrite(led2Pin, int(65535.f * std::pow((std::sin(millis()*rate - pi*0.5f) + 1.f) * 0.5f, pwr)));
+    analogWrite(led3Pin, int(65535.f * std::pow((std::sin(millis()*rate - pi) + 1.f) * 0.5f, pwr)));
+    analogWrite(led4Pin, int(65535.f * std::pow((std::sin(millis()*rate - pi*1.5f) + 1.f) * 0.5f, pwr)));
 
     if (switch2.pressEdge())
     {
@@ -67,13 +68,13 @@ void loop()
         tone(buzzerPin, buzFreq);
     }
 
-    if (button.releaseEdge())
+    if (button.releaseEdge() && switch2.pressed())
     {
         buzFreq *= 1.0594631f;
         tone(buzzerPin, buzFreq);
     }
 
-    if (switch2.releaseEdge())
+    if (!switch2.pressed())
         noTone(buzzerPin);
         
 }
