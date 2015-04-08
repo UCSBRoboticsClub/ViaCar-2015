@@ -25,6 +25,7 @@ void setup()
     pinMode(led4Pin, OUTPUT);
     
     x.setCutoffFreq(10.f, dt);
+    minScore.setTimeConst(0.1f, dt);
 
     adc.setResolution(12, ADC_0);
     adc.setConversionSpeed(ADC_HIGH_SPEED, ADC_0);
@@ -136,9 +137,9 @@ float getPosition()
     for (int i = 1; i < 3; ++i)
         imin = score[i] < score[imin] ? i : imin;
 
-    minScore = score[imin];
+    minScore.push(score[imin]);
     if (minScore > scoreLimit)
-        return 0.f;
+        return xmax * (x > 0.f ? 1.f : -1.f);
 
     return candidates[imin];
 }

@@ -74,7 +74,7 @@ const Getter getList[] =
     {"but", [&]{ return float(button.pressed()); }},
     {"sw1", [&]{ return float(switch1.pressed()); }},
     {"sw2", [&]{ return float(switch2.pressed()); }},
-    {"scmin", GETFLOAT(minScore)},
+    {"scmin", [&]{ return float(minScore); }},
     {"sclim", GETFLOAT(scoreLimit)},
 };
 

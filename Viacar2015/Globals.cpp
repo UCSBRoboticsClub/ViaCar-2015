@@ -15,7 +15,7 @@ float speed = 0.3f;
 float controllerOut = 0.f;
 bool controllerEnabled = true;
 float xmax = 0.3f;
-float minScore = 0.f;
+LowPass minScore;
 float scoreLimit = 0.1f;
 
 Motor motor(motorFwdPin, motorBackPin, motorSpeedPin);

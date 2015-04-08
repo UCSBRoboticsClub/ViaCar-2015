@@ -37,7 +37,7 @@ extern float speed;
 extern float controllerOut;
 extern bool controllerEnabled;
 extern float xmax;
-extern float minScore;
+extern LowPass minScore;
 extern float scoreLimit;
 
 extern Motor motor;
