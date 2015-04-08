@@ -24,18 +24,24 @@ void setup()
     pinMode(led3Pin, OUTPUT);
     pinMode(led4Pin, OUTPUT);
     
-    x.setCutoffFreq(50.f, dt);
+    x.setCutoffFreq(10.f, dt);
 
-    adc.setResolution(12);
-    adc.setConversionSpeed(ADC_HIGH_SPEED);
-    adc.setSamplingSpeed(ADC_HIGH_SPEED);
-    adc.setAveraging(16);
+    adc.setResolution(12, ADC_0);
+    adc.setConversionSpeed(ADC_HIGH_SPEED, ADC_0);
+    adc.setSamplingSpeed(ADC_HIGH_SPEED, ADC_0);
+    adc.setAveraging(16, ADC_0);
+    adc.setResolution(12, ADC_1);
+    adc.setConversionSpeed(ADC_HIGH_SPEED, ADC_1);
+    adc.setSamplingSpeed(ADC_HIGH_SPEED, ADC_1);
+    adc.setAveraging(16, ADC_1);
+    adc.startSynchronizedContinuous(sensorRPin, sensorLPin);
 
     RadioTerminal::initialize();
     setupCommands();
 
-    servoController.setOutputLimits(-60.f, 60.f);
+    servoController.setOutputLimits(-35.f, 35.f);
     servoController.setTuning(1000.f, 0.f, 100.f);
+    servo.calibrate(1200, 1800, 35.f, -35.f);
 
     controlTimer.begin(controlLoop, controlPeriodUs);
     controlTimer.priority(144);
@@ -55,7 +61,7 @@ void loop()
         c2 = 0.f;
 
     const float pi = 3.14159f;
-    const float rate = 2.f*pi/1000.f;
+    float rate = (switch1.pressed() ? -1.f : 1.f) * 2.f*pi/1000.f;
     const float pwr = 4.f;
     analogWrite(led1Pin, int(65535.f * std::pow((std::sin(millis()*rate) + 1.f) * 0.5f, pwr)));
     analogWrite(led2Pin, int(65535.f * std::pow((std::sin(millis()*rate - pi*0.5f) + 1.f) * 0.5f, pwr)));
@@ -94,11 +100,15 @@ void controlLoop()
 
 float getPosition()
 {
-    vr = adc.analogRead(sensorRPin) / 4096.f * 3.3f;
-    vl = adc.analogRead(sensorLPin) / 4096.f * 3.3f;
+    auto adcVals = adc.readSynchronizedContinuous();
+    vr = adcVals.result_adc0 / 4096.f * 3.3f;
+    vl = adcVals.result_adc1 / 4096.f * 3.3f;
 
     xr = volt2dist(vr);
     xl = volt2dist(vl);
+
+    if (xr > xmax + d*0.5f || xl > xmax + d*0.5f)
+        return xmax * (x > 0.f ? 1.f : -1.f);
 
     // Possible locations of the wire based on the two readings
     float candidates[] =
@@ -125,6 +135,10 @@ float getPosition()
     int imin = 0;
     for (int i = 1; i < 3; ++i)
         imin = score[i] < score[imin] ? i : imin;
+
+    minScore = score[imin];
+    if (minScore > scoreLimit)
+        return 0.f;
 
     return candidates[imin];
 }

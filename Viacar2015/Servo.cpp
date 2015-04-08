@@ -13,7 +13,7 @@ Servo::Servo(int pin, bool start)
 	analogWriteResolution(16);
     
     // Set default calibration
-    calibrate(1940, 1200, 60.f, -45.f);
+    calibrate(1800, 1200, 60.f, -60.f);
     
     // Start at center position
     pulseWidth = center;

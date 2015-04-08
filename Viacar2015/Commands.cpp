@@ -36,12 +36,14 @@ const Setter setList[] =
     {"kp", SETFLOAT(servoController.kp)},
     {"ki", SETFLOAT(servoController.ki)},
     {"kd", SETFLOAT(servoController.kd)},
+    {"xmax", SETFLOAT(xmax)},
     {"srv.cen", SETFLOAT(servo.center)},
     {"srv.upd", SETFLOAT(servo.usPerDegree)},
     {"srv.ul", SETFLOAT(servo.upperLimit)},
     {"srv.ll", SETFLOAT(servo.lowerLimit)},
     {"srv.deg", [&](float f){ servo.write(f); }},
     {"en", [&](float f){ controllerEnabled = f > 0.f; }},
+    {"sclim", SETFLOAT(scoreLimit)},
 };
 
 
@@ -67,10 +69,13 @@ const Getter getList[] =
     {"vl", GETFLOAT(vl)},
     {"xr", GETFLOAT(xr)},
     {"xl", GETFLOAT(xl)},
+    {"xmax", GETFLOAT(xmax)},
     {"x", [&]{ return float(x); }},
     {"but", [&]{ return float(button.pressed()); }},
     {"sw1", [&]{ return float(switch1.pressed()); }},
     {"sw2", [&]{ return float(switch2.pressed()); }},
+    {"scmin", GETFLOAT(minScore)},
+    {"sclim", GETFLOAT(scoreLimit)},
 };
 
 
