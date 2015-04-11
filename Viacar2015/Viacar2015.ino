@@ -99,7 +99,7 @@ void controlLoop()
     curvature = (controllerOut - vdot*std::sin(thetaest)) /
         (vel*vel*std::cos(thetaest));
 
-    float degrees = curvature / 0.0681f;
+    float degrees = curvature * 14.7f;
 
     if (controllerEnabled)
         servo = degrees;
@@ -146,8 +146,10 @@ float getPosition()
 
     // Score assigned to each candidate wire location (lower is better)
     float score[3];
+    const float weight[] = {2.f, 1.f};
     for (int i = 0; i < 3; ++i)
-        score[i] = rlDiff[i]*rlDiff[i] + (x-candidates[i])*(x-candidates[i]); 
+        score[i] = weight[0]*rlDiff[i]*rlDiff[i] +
+                   weight[1]*(x-candidates[i])*(x-candidates[i]); 
 
     // Choose candidate with the lowest score
     int imin = 0;
