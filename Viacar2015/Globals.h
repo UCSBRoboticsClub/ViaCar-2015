@@ -43,7 +43,7 @@ extern float theta;
 extern LowPass thetalp;
 extern float thetaest;
 extern float curvature;
-extern float vel;
+extern LowPass vel;
 
 extern Motor motor;
 extern Servo servo;

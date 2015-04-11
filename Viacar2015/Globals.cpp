@@ -21,7 +21,7 @@ float theta = 0.f;
 LowPass thetalp;
 float thetaest = 0.f;
 float curvature = 0.f;
-float vel = 0.f;
+LowPass vel;
 
 Motor motor(motorFwdPin, motorBackPin, motorSpeedPin);
 Servo servo(servoPin);

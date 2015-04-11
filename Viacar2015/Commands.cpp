@@ -80,7 +80,7 @@ const Getter getList[] =
     {"thetalp", [&]{ return float(thetalp); }},
     {"thetaest", GETFLOAT(thetaest)},
     {"k", GETFLOAT(curvature)},
-    {"vel", GETFLOAT(vel)},
+    {"vel", [&]{ return float(vel); }},
 };
 
 
@@ -114,7 +114,7 @@ CmdHandler* watch(const char* input)
         }
     }
 
-    RadioTerminal::write("Usage: w <var>\nValid vars:");
+    RadioTerminal::write("Usage: w <var>\nWatches the value of <var>\nValid vars:");
     for (int i = 0; i < getListSize; ++i)
     {
         snprintf(buf, 32, "\n  %s", getList[i].name);
@@ -162,7 +162,7 @@ CmdHandler* print(const char* input)
         }
     }
     
-    RadioTerminal::write("Usage: p <var>\nValid variables:");
+    RadioTerminal::write("Usage: p <var>\nPrints the value of <var>\nValid variables:");
     for (int i = 0; i < getListSize; ++i)
     {
         snprintf(buf, 32, "\n  %s", getList[i].name);
@@ -201,7 +201,7 @@ CmdHandler* set(const char* input)
         }
     }
     
-    RadioTerminal::write("Usage: s <var> <value>\nValid variables:");
+    RadioTerminal::write("Usage: s <var> <value>\nSets <var> to <value>\nValid variables:");
     for (int i = 0; i < setListSize; ++i)
     {
         snprintf(buf, 32, "\n  %s", setList[i].name);

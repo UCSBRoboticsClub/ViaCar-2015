@@ -27,6 +27,7 @@ void setup()
     x.setCutoffFreq(dt, 10.f);
     minScore.setTimeConst(dt, 0.1f);
     thetalp.setTimeConst(dt, 1.f);
+    vellp.setTimeConst(dt, 0.5f);
 
     adc.setResolution(12, ADC_0);
     adc.setConversionSpeed(ADC_HIGH_SPEED, ADC_0);
@@ -94,10 +95,10 @@ void controlLoop()
     controllerOut = servoController.update(x);
 
     float vdot = 0.f;
-    vel = (speed - 0.1f) * 11.f;
+    vel.push((speed - 0.1f) * 11.f);
 
     curvature = (controllerOut - vdot*std::sin(thetaest)) /
-        (vel*vel*std::cos(thetaest));
+                (vel*vel*std::cos(thetaest));
 
     float degrees = curvature * 14.7f;
 
@@ -108,7 +109,7 @@ void controlLoop()
 
     const float thetathresh = 1.f; 
     if (std::fabs(theta) < thetathresh || curvature*theta >= 0.f)
-        theta += -curvature * dt;
+        theta += -curvature * vel * dt;
     thetalp.push(theta);
     thetaest = theta - thetalp;
 }
