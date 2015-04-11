@@ -1,9 +1,9 @@
 #include <IntervalTimer.h>
 #include <SPI.h>
+#include <ADC.h>
 #include "Globals.h"
 #include "RadioTerminal.h"
 #include "Commands.h"
-#include "ADC.h"
 #include <cmath>
 
 
