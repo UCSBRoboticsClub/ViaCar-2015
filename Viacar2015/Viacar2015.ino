@@ -24,8 +24,9 @@ void setup()
     pinMode(led3Pin, OUTPUT);
     pinMode(led4Pin, OUTPUT);
     
-    x.setCutoffFreq(10.f, dt);
-    minScore.setTimeConst(0.1f, dt);
+    x.setCutoffFreq(dt, 10.f);
+    minScore.setTimeConst(dt, 0.1f);
+    thetalp.setTimeConst(dt, 1.f);
 
     adc.setResolution(12, ADC_0);
     adc.setConversionSpeed(ADC_HIGH_SPEED, ADC_0);
@@ -40,9 +41,9 @@ void setup()
     RadioTerminal::initialize();
     setupCommands();
 
-    servoController.setOutputLimits(-35.f, 35.f);
-    servoController.setTuning(1000.f, 0.f, 100.f);
-    servo.calibrate(1200, 1800, 35.f, -35.f);
+    servoController.setOutputLimits(-30.f, 30.f);
+    servoController.setTuning(100.f, 0.f, 10.f);
+    servo.calibrate(1188, 1788, 35.f, -35.f);
 
     controlTimer.begin(controlLoop, controlPeriodUs);
     controlTimer.priority(144);
@@ -88,14 +89,28 @@ void loop()
 
 
 void controlLoop()
-{
+{   
     x.push(getPosition());
     controllerOut = servoController.update(x);
 
+    float vdot = 0.f;
+    vel = (speed - 0.1f) * 11.f;
+
+    curvature = (controllerOut - vdot*std::sin(thetaest)) /
+        (vel*vel*std::cos(thetaest));
+
+    float degrees = curvature / 0.0681f;
+
     if (controllerEnabled)
-        servo = controllerOut;
+        servo = degrees;
 
     motor = speed;
+
+    const float thetathresh = 1.f; 
+    if (std::fabs(theta) < thetathresh || curvature*theta >= 0.f)
+        theta += -curvature * dt;
+    thetalp.push(theta);
+    thetaest = theta - thetalp;
 }
 
 
@@ -108,7 +123,9 @@ float getPosition()
     xr = volt2dist(vr);
     xl = volt2dist(vl);
 
-    if (xr > xmax + d*0.5f || xl > xmax + d*0.5f)
+    float deff = d * std::cos(thetaest);
+
+    if (xr > xmax + deff*0.5f || xl > xmax + deff*0.5f)
         return xmax * (x > 0.f ? 1.f : -1.f);
 
     // Possible locations of the wire based on the two readings
@@ -122,9 +139,9 @@ float getPosition()
     // Difference between right and left distance measurements
     float rlDiff[] =
     {
-         xr - xl + d,
-        -xr - xl + d,
-        -xr + xl + d
+         xr - xl + deff,
+        -xr - xl + deff,
+        -xr + xl + deff
     };
 
     // Score assigned to each candidate wire location (lower is better)
@@ -152,7 +169,7 @@ float volt2dist(float v)
     if (switch1.pressed())
         c2 = a > c2 ? a : c2;
 
-    float b = c2/a - 1.f;
+    float b = c2*std::cos(thetaest)/a - 1.f;
     return h*std::sqrt(b > 0.f ? b : 0.f);
 }
 

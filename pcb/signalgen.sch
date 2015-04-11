@@ -3252,8 +3252,6 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <part name="SUPPLY5" library="SparkFun-Aesthetics" deviceset="3.3V" device=""/>
 <part name="R6" library="SparkFun-Resistors" deviceset="1KOHM-1/4W-1%(PTH)" device="" value="1K"/>
 <part name="R7" library="SparkFun-Electromechanical" deviceset="TRIMPOT" device="PTH" value="5K"/>
-<part name="C11" library="SparkFun-Capacitors" deviceset="CAP" device="PTH" value="2.2nF"/>
-<part name="GND14" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="R8" library="SparkFun-Resistors" deviceset="1KOHM-1/4W-1%(PTH)" device="" value="47K"/>
 <part name="R9" library="SparkFun-Resistors" deviceset="1KOHM-1/4W-1%(PTH)" device="" value="47K"/>
 </parts>
@@ -3316,9 +3314,7 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <instance part="GND10" gate="1" x="261.62" y="2.54"/>
 <instance part="SUPPLY5" gate="G$1" x="261.62" y="35.56"/>
 <instance part="R6" gate="G$1" x="220.98" y="63.5"/>
-<instance part="R7" gate="R?" x="261.62" y="71.12" rot="R180"/>
-<instance part="C11" gate="G$1" x="261.62" y="55.88"/>
-<instance part="GND14" gate="1" x="261.62" y="48.26"/>
+<instance part="R7" gate="R?" x="266.7" y="53.34"/>
 <instance part="R8" gate="G$1" x="261.62" y="27.94" rot="R90"/>
 <instance part="R9" gate="G$1" x="261.62" y="12.7" rot="R90"/>
 </instances>
@@ -3415,11 +3411,6 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <pinref part="GND10" gate="1" pin="GND"/>
 <wire x1="261.62" y1="5.08" x2="261.62" y2="7.62" width="0.1524" layer="91"/>
 <pinref part="R9" gate="G$1" pin="1"/>
-</segment>
-<segment>
-<pinref part="C11" gate="G$1" pin="2"/>
-<pinref part="GND14" gate="1" pin="GND"/>
-<wire x1="261.62" y1="50.8" x2="261.62" y2="53.34" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="N$1" class="0">
@@ -3620,15 +3611,13 @@ It has a reduced top mask to make it harder to install upside-down.</description
 </net>
 <net name="N$16" class="0">
 <segment>
-<pinref part="U3" gate="A" pin="IN-"/>
-<wire x1="269.24" y1="58.42" x2="266.7" y2="58.42" width="0.1524" layer="91"/>
-<wire x1="266.7" y1="58.42" x2="266.7" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="266.7" y1="53.34" x2="287.02" y2="53.34" width="0.1524" layer="91"/>
-<wire x1="287.02" y1="53.34" x2="287.02" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="U3" gate="A" pin="OUT"/>
-<wire x1="287.02" y1="60.96" x2="284.48" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="R12" gate="G$1" pin="1"/>
+<wire x1="284.48" y1="60.96" x2="287.02" y2="60.96" width="0.1524" layer="91"/>
+<pinref part="R7" gate="R?" pin="CW"/>
 <wire x1="287.02" y1="60.96" x2="289.56" y2="60.96" width="0.1524" layer="91"/>
+<wire x1="271.78" y1="53.34" x2="287.02" y2="53.34" width="0.1524" layer="91"/>
+<wire x1="287.02" y1="53.34" x2="287.02" y2="60.96" width="0.1524" layer="91"/>
 <junction x="287.02" y="60.96"/>
 </segment>
 </net>
@@ -3659,32 +3648,26 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <wire x1="254" y1="53.34" x2="254" y2="60.96" width="0.1524" layer="91"/>
 <pinref part="U2" gate="D" pin="OUT"/>
 <wire x1="254" y1="60.96" x2="251.46" y2="60.96" width="0.1524" layer="91"/>
-<pinref part="R7" gate="R?" pin="CW"/>
-<wire x1="256.54" y1="71.12" x2="254" y2="71.12" width="0.1524" layer="91"/>
-<wire x1="254" y1="71.12" x2="254" y2="60.96" width="0.1524" layer="91"/>
-<junction x="254" y="60.96"/>
+<pinref part="R7" gate="R?" pin="CCW"/>
+<wire x1="261.62" y1="53.34" x2="254" y2="53.34" width="0.1524" layer="91"/>
+<junction x="254" y="53.34"/>
 </segment>
 </net>
 <net name="N$15" class="0">
 <segment>
-<pinref part="U3" gate="B" pin="IN+"/>
-<wire x1="269.24" y1="20.32" x2="261.62" y2="20.32" width="0.1524" layer="91"/>
 <wire x1="261.62" y1="17.78" x2="261.62" y2="20.32" width="0.1524" layer="91"/>
-<junction x="261.62" y="20.32"/>
-<wire x1="261.62" y1="20.32" x2="261.62" y2="22.86" width="0.1524" layer="91"/>
 <pinref part="R8" gate="G$1" pin="1"/>
 <pinref part="R9" gate="G$1" pin="2"/>
-</segment>
-</net>
-<net name="N$18" class="0">
-<segment>
-<pinref part="R7" gate="R?" pin="WIPER"/>
-<pinref part="C11" gate="G$1" pin="1"/>
-<wire x1="261.62" y1="66.04" x2="261.62" y2="63.5" width="0.1524" layer="91"/>
-<wire x1="261.62" y1="60.96" x2="261.62" y2="63.5" width="0.1524" layer="91"/>
+<pinref part="U3" gate="B" pin="IN+"/>
+<wire x1="261.62" y1="20.32" x2="261.62" y2="22.86" width="0.1524" layer="91"/>
+<wire x1="261.62" y1="20.32" x2="264.16" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="264.16" y1="20.32" x2="269.24" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="269.24" y1="20.32" x2="264.16" y2="20.32" width="0.1524" layer="91"/>
+<wire x1="264.16" y1="20.32" x2="264.16" y2="63.5" width="0.1524" layer="91"/>
 <pinref part="U3" gate="A" pin="IN+"/>
-<wire x1="261.62" y1="63.5" x2="269.24" y2="63.5" width="0.1524" layer="91"/>
-<junction x="261.62" y="63.5"/>
+<wire x1="264.16" y1="63.5" x2="269.24" y2="63.5" width="0.1524" layer="91"/>
+<junction x="264.16" y="20.32"/>
+<junction x="261.62" y="20.32"/>
 </segment>
 </net>
 <net name="N$11" class="0">
@@ -3700,6 +3683,13 @@ It has a reduced top mask to make it harder to install upside-down.</description
 <pinref part="D2" gate="G$1" pin="A"/>
 <wire x1="20.32" y1="50.8" x2="15.24" y2="50.8" width="0.1524" layer="91"/>
 <wire x1="15.24" y1="50.8" x2="15.24" y2="48.26" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="N$18" class="0">
+<segment>
+<pinref part="U3" gate="A" pin="IN-"/>
+<pinref part="R7" gate="R?" pin="WIPER"/>
+<wire x1="269.24" y1="58.42" x2="266.7" y2="58.42" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>

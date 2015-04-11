@@ -17,6 +17,11 @@ bool controllerEnabled = true;
 float xmax = 0.3f;
 LowPass minScore;
 float scoreLimit = 0.1f;
+float theta = 0.f;
+LowPass thetalp;
+float thetaest = 0.f;
+float curvature = 0.f;
+float vel = 0.f;
 
 Motor motor(motorFwdPin, motorBackPin, motorSpeedPin);
 Servo servo(servoPin);

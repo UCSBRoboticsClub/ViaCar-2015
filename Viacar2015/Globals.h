@@ -39,6 +39,11 @@ extern bool controllerEnabled;
 extern float xmax;
 extern LowPass minScore;
 extern float scoreLimit;
+extern float theta;
+extern LowPass thetalp;
+extern float thetaest;
+extern float curvature;
+extern float vel;
 
 extern Motor motor;
 extern Servo servo;

@@ -76,6 +76,11 @@ const Getter getList[] =
     {"sw2", [&]{ return float(switch2.pressed()); }},
     {"scmin", [&]{ return float(minScore); }},
     {"sclim", GETFLOAT(scoreLimit)},
+    {"theta", GETFLOAT(theta)},
+    {"thetalp", [&]{ return float(thetalp); }},
+    {"thetaest", GETFLOAT(thetaest)},
+    {"k", GETFLOAT(curvature)},
+    {"vel", GETFLOAT(vel)},
 };
 
 
