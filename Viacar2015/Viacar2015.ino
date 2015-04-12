@@ -27,7 +27,7 @@ void setup()
     x.setCutoffFreq(dt, 10.f);
     minScore.setTimeConst(dt, 0.1f);
     thetalp.setTimeConst(dt, 1.f);
-    vellp.setTimeConst(dt, 0.5f);
+    vel.setTimeConst(dt, 0.5f);
 
     adc.setResolution(12, ADC_0);
     adc.setConversionSpeed(ADC_HIGH_SPEED, ADC_0);
@@ -105,7 +105,7 @@ void controlLoop()
     if (controllerEnabled)
         servo = degrees;
 
-    motor = speed;
+    motor = speed * std::cos(thetaest);
 
     const float thetathresh = 1.f; 
     if (std::fabs(theta) < thetathresh || curvature*theta >= 0.f)
