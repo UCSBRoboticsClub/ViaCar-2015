@@ -42,8 +42,6 @@ void setup()
     RadioTerminal::initialize();
     setupCommands();
 
-    servoController.setOutputLimits(-30.f, 30.f);
-    servoController.setTuning(100.f, 0.f, 10.f);
     servo.calibrate(1188, 1788, 35.f, -35.f);
 
     controlTimer.begin(controlLoop, controlPeriodUs);
@@ -90,28 +88,23 @@ void loop()
 
 
 void controlLoop()
-{   
+{
+    const float oldx = x;
     x.push(getPosition());
-    controllerOut = servoController.update(x);
-
-    float vdot = 0.f;
+    xdot = (x - oldx) / dt;
     vel.push((speed - 0.1f) * 11.f);
 
-    curvature = (controllerOut - vdot*std::sin(thetaest)) /
-                (vel*vel*std::cos(thetaest));
-
-    float degrees = curvature * 14.7f;
+    curvature = (kp*x + kd*xdot/vel) / std::cos(theta);
 
     if (controllerEnabled)
-        servo = degrees;
+        servo = curvature * 14.7f;
 
-    motor = speed * std::cos(thetaest);
-
-    const float thetathresh = 1.f; 
-    if (std::fabs(theta) < thetathresh || curvature*theta >= 0.f)
-        theta += -curvature * vel * dt;
-    thetalp.push(theta);
-    thetaest = theta - thetalp;
+    motor = speed * std::cos(theta);
+ 
+    if (std::fabs(thetaint) < thetamax || curvature*thetaint >= 0.f)
+        thetaint += -curvature * vel * dt;
+    thetalp.push(thetaint);
+    theta = thetaint - thetalp;
 }
 
 
@@ -124,7 +117,7 @@ float getPosition()
     xr = volt2dist(vr);
     xl = volt2dist(vl);
 
-    float deff = d * std::cos(thetaest);
+    float deff = d * std::cos(theta);
 
     if (xr > xmax + deff*0.5f || xl > xmax + deff*0.5f)
         return xmax * (x > 0.f ? 1.f : -1.f);
@@ -172,7 +165,7 @@ float volt2dist(float v)
     if (switch1.pressed())
         c2 = a > c2 ? a : c2;
 
-    float b = c2*std::cos(thetaest)/a - 1.f;
+    float b = c2*std::cos(theta)/a - 1.f;
     return h*std::sqrt(b > 0.f ? b : 0.f);
 }
 

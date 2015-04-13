@@ -8,6 +8,7 @@
 #include <cstring>
 #include <stdlib.h>
 #include <stdio.h>
+#include <cmath>
 
 #define GETFLOAT(name) [&]{ return name; }
 #define SETFLOAT(name) [&](float f){ name = f; }
@@ -28,59 +29,59 @@ struct Getter
 
 const Setter setList[] =
 {
+    {"xmax", SETFLOAT(xmax)},
+    {"speed", SETFLOAT(speed)},
+    {"kp", SETFLOAT(kp)},
+    {"kd", SETFLOAT(kd)},
+    {"zeta", [&](float zeta){ kd = 2.f*std::sqrt(kp)*zeta; }},
+    {"en", [&](float f){ controllerEnabled = f > 0.f; }},
     {"h", SETFLOAT(h)},
     {"d", SETFLOAT(d)},
     {"c1", SETFLOAT(c1)},
     {"c2", SETFLOAT(c2)},
-    {"speed", SETFLOAT(speed)},
-    {"kp", SETFLOAT(servoController.kp)},
-    {"ki", SETFLOAT(servoController.ki)},
-    {"kd", SETFLOAT(servoController.kd)},
-    {"xmax", SETFLOAT(xmax)},
+    {"sclim", SETFLOAT(scoreLimit)},
     {"srv.cen", SETFLOAT(servo.center)},
     {"srv.upd", SETFLOAT(servo.usPerDegree)},
     {"srv.ul", SETFLOAT(servo.upperLimit)},
     {"srv.ll", SETFLOAT(servo.lowerLimit)},
     {"srv.deg", [&](float f){ servo.write(f); }},
-    {"en", [&](float f){ controllerEnabled = f > 0.f; }},
-    {"sclim", SETFLOAT(scoreLimit)},
 };
 
 
 const Getter getList[] =
 {
+    {"x", [&]{ return float(x); }},
+    {"xmax", GETFLOAT(xmax)},
+    {"xdot", GETFLOAT(xdot)},
+    {"speed", GETFLOAT(speed)},
+    {"vel", [&]{ return float(vel); }},
+    {"th", GETFLOAT(theta)},
+    {"thi", GETFLOAT(thetaint)},
+    {"thlp", [&]{ return float(thetalp); }},
+    {"thmax", GETFLOAT(thetamax)},
+    {"curv", GETFLOAT(curvature)},
+    {"en", [&]{ return float(controllerEnabled); }},
+    {"vr", GETFLOAT(vr)},
+    {"vl", GETFLOAT(vl)},
+    {"xr", GETFLOAT(xr)},
+    {"xl", GETFLOAT(xl)},
     {"h", GETFLOAT(h)},
     {"d", GETFLOAT(d)},
     {"c1", GETFLOAT(c1)},
     {"c2", GETFLOAT(c2)},
-    {"speed", GETFLOAT(speed)},
-    {"kp", GETFLOAT(servoController.kp)},
-    {"ki", GETFLOAT(servoController.ki)},
-    {"kd", GETFLOAT(servoController.kd)},
+    {"kp", GETFLOAT(kp)},
+    {"kd", GETFLOAT(kd)},
+    {"scmin", [&]{ return float(minScore); }},
+    {"sclim", GETFLOAT(scoreLimit)},
     {"srv.cen", GETFLOAT(servo.center)},
     {"srv.upd", GETFLOAT(servo.usPerDegree)},
     {"srv.ul", GETFLOAT(servo.upperLimit)},
     {"srv.ll", GETFLOAT(servo.lowerLimit)},
     {"srv.deg", [&]{ return servo.read(); }},
     {"srv.pw", GETFLOAT(servo.pulseWidth)},
-    {"ctrl", GETFLOAT(controllerOut)},
-    {"en", [&]{ return float(controllerEnabled); }},
-    {"vr", GETFLOAT(vr)},
-    {"vl", GETFLOAT(vl)},
-    {"xr", GETFLOAT(xr)},
-    {"xl", GETFLOAT(xl)},
-    {"xmax", GETFLOAT(xmax)},
-    {"x", [&]{ return float(x); }},
     {"but", [&]{ return float(button.pressed()); }},
     {"sw1", [&]{ return float(switch1.pressed()); }},
     {"sw2", [&]{ return float(switch2.pressed()); }},
-    {"scmin", [&]{ return float(minScore); }},
-    {"sclim", GETFLOAT(scoreLimit)},
-    {"theta", GETFLOAT(theta)},
-    {"thetalp", [&]{ return float(thetalp); }},
-    {"thetaest", GETFLOAT(thetaest)},
-    {"k", GETFLOAT(curvature)},
-    {"vel", [&]{ return float(vel); }},
 };
 
 
