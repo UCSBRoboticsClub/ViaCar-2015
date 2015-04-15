@@ -3,17 +3,19 @@
 
 
 LowPass x;
-float xmax = 0.3f;
+float xmax = 0.5f;
 float xdot = 0.f;
-float speed = 0.3f;
-LowPass vel;
+float speed = 0.4f;
+float vel = 0.f;
+float velfch = 0.995f;
+float velfcl = 0.999f;
 float theta = 0.f;
 float thetaint = 0.f;
 LowPass thetalp;
 float thetamax = 1.f;
 float curvature = 0.f;
 float kp = 100.f;
-float kd = 20.f;
+float kd = 30.f;
 bool controllerEnabled = true;
 float vr = 0.f;
 float vl = 0.f;
