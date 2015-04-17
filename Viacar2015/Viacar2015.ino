@@ -24,7 +24,9 @@ void setup()
     pinMode(led3Pin, OUTPUT);
     pinMode(led4Pin, OUTPUT);
     
-    x.setCutoffFreq(dt, 10.f);
+    x.setCutoffFreq(dt, 30.f);
+    xr.setCutoffFreq(dt, 100.f);
+    xl.setCutoffFreq(dt, 100.f);
     minScore.setTimeConst(dt, 0.1f);
     thetalp.setTimeConst(dt, 1.f);
 
@@ -40,9 +42,9 @@ void setup()
 
     RadioTerminal::initialize();
     setupCommands();
-
-    servoController.setOutputLimits(-30.f, 30.f);
-    servoController.setTuning(100.f, 0.f, 10.f);
+    
+    servoController.setOutputLimits(-33.f, 33.f);
+    servoController.setTuning(300.f, 0.f, 50.f);
     servo.calibrate(1188, 1788, 35.f, -35.f);
 
     controlTimer.begin(controlLoop, controlPeriodUs);
@@ -104,7 +106,7 @@ void controlLoop()
     if (controllerEnabled)
         servo = degrees;
 
-    motor = speed;
+    motor = (speed - 0.1f)*(0.15f/(0.15f + std::fabs(x))) + 0.1f;
 
     const float thetathresh = 1.f; 
     if (std::fabs(theta) < thetathresh || curvature*theta >= 0.f)
@@ -120,8 +122,8 @@ float getPosition()
     vr = adcVals.result_adc0 / 4096.f * 3.3f;
     vl = adcVals.result_adc1 / 4096.f * 3.3f;
 
-    xr = volt2dist(vr);
-    xl = volt2dist(vl);
+    xr.push(volt2dist(vr));
+    xl.push(volt2dist(vl));
 
     float deff = d * std::cos(thetaest);
 
@@ -155,10 +157,6 @@ float getPosition()
     int imin = 0;
     for (int i = 1; i < 3; ++i)
         imin = score[i] < score[imin] ? i : imin;
-
-    minScore.push(score[imin]);
-    if (minScore > scoreLimit)
-        return xmax * (x > 0.f ? 1.f : -1.f);
 
     return candidates[imin];
 }

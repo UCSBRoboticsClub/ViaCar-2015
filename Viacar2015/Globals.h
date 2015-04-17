@@ -26,8 +26,8 @@ const int led4Pin = 23;
 
 extern float vr;
 extern float vl;
-extern float xr;
-extern float xl;
+extern LowPass xr;
+extern LowPass xl;
 extern LowPass x;
 extern float h;
 extern float d;
