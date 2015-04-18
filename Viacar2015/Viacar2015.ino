@@ -13,6 +13,7 @@ ADC adc;
 void controlLoop();
 float getPosition();
 float volt2dist(float v);
+void encoderInt();
 
 
 void setup()
@@ -29,6 +30,8 @@ void setup()
     xl.setCutoffFreq(dt, 100.f);
     minScore.setTimeConst(dt, 0.1f);
     thetalp.setTimeConst(dt, 1.f);
+    velocity.setTimeConst(dt, 0.05f);
+    accel.setTimeConst(dt, 0.5f);
 
     adc.setResolution(12, ADC_0);
     adc.setConversionSpeed(ADC_HIGH_SPEED, ADC_0);
@@ -44,11 +47,17 @@ void setup()
     setupCommands();
     
     servoController.setOutputLimits(-33.f, 33.f);
-    servoController.setTuning(300.f, 0.f, 50.f);
+    servoController.setTuning(150.f, 0.f, 50.f);
     servo.calibrate(1188, 1788, 35.f, -35.f);
+
+    speedController.setOutputLimits(-0.6f, 0.6f);
+    speedController.setTuning(0.3f, 1.f, 0.f); 
 
     controlTimer.begin(controlLoop, controlPeriodUs);
     controlTimer.priority(144);
+
+    pinMode(encoderPin, INPUT);
+    attachInterrupt(encoderPin, encoderInt, CHANGE);
 }
 
 float buzFreq = 110.f;
@@ -95,22 +104,36 @@ void controlLoop()
     x.push(getPosition());
     controllerOut = servoController.update(x);
 
-    float vdot = 0.f;
-    vel = (speed - 0.1f) * 11.f;
+    const float lastvel = velocity;
+    velocity.push((encCounts - lastCounts) / dt * 0.0058f);
+    lastCounts = encCounts;
+    accel.push((velocity - lastvel) / dt);
 
-    curvature = (controllerOut - vdot*std::sin(thetaest)) /
+    const float vel = (float(velocity) < minSpeed ? minSpeed : float(velocity));
+    
+    curvature = (controllerOut - accel*std::sin(thetaest)) /
         (vel*vel*std::cos(thetaest));
 
     float degrees = curvature * 14.7f;
 
-    if (controllerEnabled)
+    speedRef = (speed - minSpeed)*(0.15f/(0.15f + std::fabs(x))) + minSpeed;
+    speedCtrl = speedController.update(speedRef - velocity);
+
+    const uint32_t cdata = RadioTerminal::getControllerData();
+    if (cdata != 0)
+    {
+        servo = 40.f * 0.0078125f * int8_t((cdata>>16)&0xff);
+        motor = 1.f * -0.0078125f * int8_t((cdata>>8)&0xff);
+    }
+    else if (controllerEnabled) 
+    {
         servo = degrees;
+        motor = (velocity > 0.01f ? speedCtrl : 0.15f);
+    }
 
-    motor = (speed - 0.1f)*(0.15f/(0.15f + std::fabs(x))) + 0.1f;
-
-    const float thetathresh = 1.f; 
-    if (std::fabs(theta) < thetathresh || curvature*theta >= 0.f)
-        theta += -curvature * dt;
+    const float thetathresh = 1.f;
+    theta += -curvature * dt;
+    theta = (theta > thetathresh ? thetathresh : (theta < -thetathresh ? -thetathresh : theta));
     thetalp.push(theta);
     thetaest = theta - thetalp;
 }
@@ -173,3 +196,8 @@ float volt2dist(float v)
     return h*std::sqrt(b > 0.f ? b : 0.f);
 }
 
+
+void encoderInt()
+{
+    ++encCounts;
+}

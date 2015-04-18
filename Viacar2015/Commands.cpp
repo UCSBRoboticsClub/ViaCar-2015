@@ -54,6 +54,8 @@ const Getter getList[] =
     {"c1", GET(c1)},
     {"c2", GET(c2)},
     {"speed", GET(speed)},
+    {"sctrl", GET(speedCtrl)},
+    {"sref", GET(speedRef)},
     {"kp", GET(servoController.kp)},
     {"ki", GET(servoController.ki)},
     {"kd", GET(servoController.kd)},
@@ -80,8 +82,8 @@ const Getter getList[] =
     {"thetalp", GET(thetalp)},
     {"thetaest", GET(thetaest)},
     {"k", GET(curvature)},
-    {"vel", GET(vel)},
-    {"acc", GET(acc)},
+    {"vel", GET(velocity)},
+    {"acc", GET(accel)},
     {"enc", GET(encCounts)},
 };
 

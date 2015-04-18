@@ -9,6 +9,7 @@
 #include "PIDController.h"
 
 
+const int encoderPin = 2;
 const int servoPin = 3;
 const int motorSpeedPin = 5;
 const int motorBackPin = 6;
@@ -34,6 +35,9 @@ extern float d;
 extern float c1;
 extern float c2;
 extern float speed;
+extern float minSpeed;
+extern float speedRef;
+extern float speedCtrl;
 extern float controllerOut;
 extern bool controllerEnabled;
 extern float xmax;
@@ -43,7 +47,10 @@ extern float theta;
 extern LowPass thetalp;
 extern float thetaest;
 extern float curvature;
-extern float vel;
+extern LowPass velocity;
+extern LowPass accel;
+extern volatile uint32_t encCounts;
+extern uint32_t lastCounts;
 
 extern Motor motor;
 extern Servo servo;
@@ -51,8 +58,9 @@ extern Button button;
 extern Button switch1;
 extern Button switch2;
 extern PIDController servoController;
+extern PIDController speedController;
 
-const unsigned int controlFreq = 1000; // Hz
+const unsigned int controlFreq = 500; // Hz
 const unsigned int controlPeriodUs = 1000000 / controlFreq;
 const float dt = 1.f / controlFreq;
 
