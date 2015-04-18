@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define GETFLOAT(name) [&]{ return name; }
+#define GET(expr) [&]{ return float(expr); }
 #define SETFLOAT(name) [&](float f){ name = f; }
 
 
@@ -49,38 +49,40 @@ const Setter setList[] =
 
 const Getter getList[] =
 {
-    {"h", GETFLOAT(h)},
-    {"d", GETFLOAT(d)},
-    {"c1", GETFLOAT(c1)},
-    {"c2", GETFLOAT(c2)},
-    {"speed", GETFLOAT(speed)},
-    {"kp", GETFLOAT(servoController.kp)},
-    {"ki", GETFLOAT(servoController.ki)},
-    {"kd", GETFLOAT(servoController.kd)},
-    {"srv.cen", GETFLOAT(servo.center)},
-    {"srv.upd", GETFLOAT(servo.usPerDegree)},
-    {"srv.ul", GETFLOAT(servo.upperLimit)},
-    {"srv.ll", GETFLOAT(servo.lowerLimit)},
-    {"srv.deg", [&]{ return servo.read(); }},
-    {"srv.pw", GETFLOAT(servo.pulseWidth)},
-    {"ctrl", GETFLOAT(controllerOut)},
-    {"en", [&]{ return float(controllerEnabled); }},
-    {"vr", GETFLOAT(vr)},
-    {"vl", GETFLOAT(vl)},
-    {"xr", [&]{ return float(xr); }},
-    {"xl", [&]{ return float(xl); }},
-    {"xmax", GETFLOAT(xmax)},
-    {"x", [&]{ return float(x); }},
-    {"but", [&]{ return float(button.pressed()); }},
-    {"sw1", [&]{ return float(switch1.pressed()); }},
-    {"sw2", [&]{ return float(switch2.pressed()); }},
-    {"scmin", [&]{ return float(minScore); }},
-    {"sclim", GETFLOAT(scoreLimit)},
-    {"theta", GETFLOAT(theta)},
-    {"thetalp", [&]{ return float(thetalp); }},
-    {"thetaest", GETFLOAT(thetaest)},
-    {"k", GETFLOAT(curvature)},
-    {"vel", GETFLOAT(vel)},
+    {"h", GET(h)},
+    {"d", GET(d)},
+    {"c1", GET(c1)},
+    {"c2", GET(c2)},
+    {"speed", GET(speed)},
+    {"kp", GET(servoController.kp)},
+    {"ki", GET(servoController.ki)},
+    {"kd", GET(servoController.kd)},
+    {"srv.cen", GET(servo.center)},
+    {"srv.upd", GET(servo.usPerDegree)},
+    {"srv.ul", GET(servo.upperLimit)},
+    {"srv.ll", GET(servo.lowerLimit)},
+    {"srv.deg", GET(servo.read())},
+    {"srv.pw", GET(servo.pulseWidth)},
+    {"ctrl", GET(controllerOut)},
+    {"en", GET(controllerEnabled)},
+    {"vr", GET(vr)},
+    {"vl", GET(vl)},
+    {"xr", GET(xr)},
+    {"xl", GET(xl)},
+    {"xmax", GET(xmax)},
+    {"x", GET(x)},
+    {"but", GET(button.pressed())},
+    {"sw1", GET(switch1.pressed())},
+    {"sw2", GET(switch2.pressed())},
+    {"scmin", GET(minScore)},
+    {"sclim", GET(scoreLimit)},
+    {"theta", GET(theta)},
+    {"thetalp", GET(thetalp)},
+    {"thetaest", GET(thetaest)},
+    {"k", GET(curvature)},
+    {"vel", GET(vel)},
+    {"acc", GET(acc)},
+    {"enc", GET(encCounts)},
 };
 
 
