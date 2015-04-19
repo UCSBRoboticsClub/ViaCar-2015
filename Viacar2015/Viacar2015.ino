@@ -25,9 +25,9 @@ void setup()
     pinMode(led3Pin, OUTPUT);
     pinMode(led4Pin, OUTPUT);
     
-    x.setCutoffFreq(dt, 30.f);
-    xr.setCutoffFreq(dt, 100.f);
-    xl.setCutoffFreq(dt, 100.f);
+    x.setCutoffFreq(dt, 60.f);
+    xr.setCutoffFreq(dt, 150.f);
+    xl.setCutoffFreq(dt, 150.f);
     minScore.setTimeConst(dt, 0.1f);
     thetalp.setTimeConst(dt, 1.f);
     velocity.setTimeConst(dt, 0.05f);
@@ -47,10 +47,10 @@ void setup()
     setupCommands();
     
     servoController.setOutputLimits(-33.f, 33.f);
-    servoController.setTuning(150.f, 0.f, 50.f);
+    servoController.setTuning(50.f, 0.f, 10.f);
     servo.calibrate(1188, 1788, 35.f, -35.f);
 
-    speedController.setOutputLimits(-0.6f, 0.6f);
+    speedController.setOutputLimits(-0.8f, 0.8f);
     speedController.setTuning(0.3f, 1.f, 0.f); 
 
     controlTimer.begin(controlLoop, controlPeriodUs);
@@ -171,7 +171,7 @@ float getPosition()
 
     // Score assigned to each candidate wire location (lower is better)
     float score[3];
-    const float weight[] = {2.f, 1.f};
+    const float weight[] = {4.f, 1.f};
     for (int i = 0; i < 3; ++i)
         score[i] = weight[0]*rlDiff[i]*rlDiff[i] +
                    weight[1]*(x-candidates[i])*(x-candidates[i]); 
